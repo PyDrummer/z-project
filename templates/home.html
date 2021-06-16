@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class='block-h1'>Welcome to the Driver home page</h1>
+    <div class='driver'>
+        <h2>Select the driver to update his times</h2>
+        <ul>
+            {% for driver in object_list %}
+                <li><a href="{% url 'details' driver.pk %}">{{driver.driver}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

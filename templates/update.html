@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Save">
+    </form>
+{% endblock content %}
+
+
+<!-- <form action='' method='post'>
+    <label for='work'>Work hours:</label>
+    <input type="number" name='work'>
+    <input type='submit'>
+</form> -->
