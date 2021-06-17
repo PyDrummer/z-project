@@ -1,8 +1,11 @@
 from typing import List
 from django.shortcuts import render
+from django.views import generic
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 from django.views.generic.edit import FormView
 from .models import Driver
+from .serializer import DriverSerializer
+from rest_framework import generics
 
 #form stuff:
 from django.shortcuts import render
@@ -54,7 +57,18 @@ class DriverUpdateView(FormView):
         if self.model.work_clock > work:
             self.model.work_clock -= work
             print(f'result is: {self.model.work_clock}')
-            self.model.save()
+        else:
+            print('In Violation!')
+            self.model.work_clock = 0
+            self.model.status = 'In Violation.'
+        self.model.save()
         return super().form_valid(form)
 
-        
+class DriverList(generics.ListCreateAPIView):
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+
+
+class DriverDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Driver.objects.all
+    serializer_class = DriverSerializer      
