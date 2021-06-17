@@ -13,3 +13,4 @@ class WorkForm(forms.ModelForm):
 class RawWorkForm(forms.Form):
     work = forms.IntegerField()
     drive = forms.IntegerField()
+    off = forms.IntegerField()
