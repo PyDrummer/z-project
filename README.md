@@ -8,3 +8,22 @@ Working: tracks time between clock in and clock out, this can include loading pa
 Driving: tracks the time while driving the vehicle
 each work clock has max allowed hours, and when those are exceeded the driver is violating the law.
 
+# How to use this app:
+- after clicking the 'code' dropdown, copy the github ssh link
+- in your terminal enter git clone (the link you copied)
+- pip or poetry install the dependancies
+
+## If you are using docker:
+- docker-compose up
+- username: a_beaver, password: password123
+
+## If you are using shell
+- poetry shell
+- python manage.py makemigrations homework_api
+- python manage.py migrate
+- python manage.py createsuperuser
+- create your username and password
+- *in the browser* navigate to: 127.0.0.1:8000/admin
+- add your 'driver'
+- navigate to 127.0.0.1:8000
+- Here you will see your driver and can update their drive times.
