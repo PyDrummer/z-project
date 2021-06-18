@@ -3,8 +3,8 @@
     <div>
         <h1>Driver Name: {{driver.driver}}</h1>
         <h2>Clocks:</h2>
-        <p>Working Time Left: {{driver.work_clock}} Violation Status: {{ driver.status }}</p>
-        <p>Drive Time Left: {{driver.drive_clock}} Violation Status: {{ driver.status }}</p>
+        <p>Working Time Left: {{driver.work_clock}} Violation Status: {{ driver.work_status }}</p>
+        <p>Drive Time Left: {{driver.drive_clock}} Violation Status: {{ driver.drive_status }}</p>
     </div>
     <a href="{% url 'update' driver.pk %}">Update Driver times</a>
 {% endblock content %}
