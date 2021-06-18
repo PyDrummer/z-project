@@ -8,6 +8,9 @@ Working: tracks time between clock in and clock out, this can include loading pa
 Driving: tracks the time while driving the vehicle
 each work clock has max allowed hours, and when those are exceeded the driver is violating the law.
 
+# What does this app do?
+This is a simulated time keeping application to test whether or not a mock company's driver is within violation.
+
 # How to use this app:
 - after clicking the 'code' dropdown, copy the github ssh link
 - in your terminal enter git clone (the link you copied)
