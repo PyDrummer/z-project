@@ -52,10 +52,10 @@ class DriverUpdateView(FormView):
         driver = Driver.objects.all()
         # For the purpose of this exercise, this api does not need to account for multiple drivers simultaneously
         
-        if driver:
+        try:   
             model = driver[0]
             # print(f'model is: {model}')
-          
+            
             form_class = RawWorkForm
             success_url = '/'
 
@@ -95,9 +95,10 @@ class DriverUpdateView(FormView):
 
                     self.model.save()
                 return super().form_valid(form)
-
+        except:
+            pass
     ## This except is not currently working...
-    except ObjectDoesNotExist: 
+    except Driver.DoesNotExist: 
         pass
     
 

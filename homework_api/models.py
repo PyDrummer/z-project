@@ -17,15 +17,3 @@ class Driver(models.Model):
     def get_absolute_url(self):
         return reverse('', args=[str(self.driver)])
 
-    # def work_hours(self, hours):
-    #     if self.work_clock > hours:
-    #         self.work_clock -= hours
-    #         return f'{self.work_clock} work hours left'
-    #     else:
-    #         self.work_clock = 0
-    #         self.status = 'In Violation'
-    #         return f'{self.work_clock} work hours, {self.status}'
-    
-    # def drive_hours(self, hours):
-    #     if self.work_clock > 0 and self.drive_clock > 0:
-
