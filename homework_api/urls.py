@@ -9,6 +9,6 @@ urlpatterns = [
     path('new/', DriverCreateView.as_view(), name='create'),
     path('<int:pk>/edit', DriverUpdateView.as_view(), name='update'),
     path('api/', DriverList.as_view(), name='api'),
-    path('apidetail/', DriverDetail.as_view(), name='apidetail')
+    path('api/<int:pk>/', DriverDetail.as_view(), name='apidetail')
     # path('<int:pk>/delete', DriverDeleteView.as_view(), name='delete')
 ]

@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div id='details'>
-        <h1 class='block-h1'>Driver Name: {{driver.driver}}</h1>
-        <p>Working Time Left: {{driver.work_clock}}</p>
-        <p>Drive Time Left: {{driver.drive_clock}}</p>
+    <div>
+        <h1>Driver Name: {{driver.driver}}</h1>
+        <h2>Clocks:</h2>
+        <p>Working Time Left: {{driver.work_clock}} Violation Status: {{ driver.status }}</p>
+        <p>Drive Time Left: {{driver.drive_clock}} Violation Status: {{ driver.status }}</p>
     </div>
     <a href="{% url 'update' driver.pk %}">Update Driver times</a>
 {% endblock content %}

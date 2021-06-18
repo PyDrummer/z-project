@@ -6,6 +6,7 @@ from django.views.generic.edit import FormView
 from .models import Driver
 from .serializer import DriverSerializer
 from rest_framework import generics
+from django.core.exceptions import ObjectDoesNotExist
 
 #form stuff:
 from django.shortcuts import render
@@ -44,25 +45,65 @@ class DriverCreateView(CreateView):
 # Working kinda...
 class DriverUpdateView(FormView):
     template_name='update.html'
-    model = Driver.objects.get()
-    print(f'{model.work_clock} work clock is 1')
-    form_class = RawWorkForm
-    success_url = '/'
+    # add a try/except for model because there isnt always a 'driver' instance at the beginning.
+    try:
+        driver = Driver.objects.all()
+        # For the purpose of this exercise, this api does not need to account for multiple drivers simultaneously
+        if len(driver) > 0:
+            model = driver[0]
+            # print(f'model is: {model}')
+          
+            form_class = RawWorkForm
+            success_url = '/'
 
-    def form_valid(self, form):
-        # print(form.cleaned_data['work'])
-        work = form.cleaned_data['work']
-        # print(type(work))
-        # print(type(self.model.work_clock))
-        if self.model.work_clock > work:
-            self.model.work_clock -= work
-            print(f'result is: {self.model.work_clock}')
-        else:
-            print('In Violation!')
-            self.model.work_clock = 0
-            self.model.status = 'In Violation.'
-        self.model.save()
-        return super().form_valid(form)
+            def form_valid(self, form):
+                print(f'form is {form}')
+                work = form.cleaned_data['work']
+                drive = form.cleaned_data['drive']
+                off = form.cleaned_data['off']
+                print(f'off is {off}')
+                print(f'work_clock is {self.model.work_clock}')
+
+                if off >= 10:
+                    self.model.work_clock = 14
+                    self.model.status = 'OK'
+                    self.model.save()
+                    print(f'off 10 work_clock is {self.model.work_clock}')
+                else:
+                    all_times = work + drive + off
+                    print(f'all times is {all_times}')
+
+                    if (self.model.work_clock > all_times):
+                        self.model.work_clock -= all_times
+
+                        print(f'result is: {self.model.work_clock}')
+                    else:
+                        print('In Violation!')
+                        self.model.work_clock = 0
+                        self.model.status = 'In Violation.'
+                    self.model.save()
+                return super().form_valid(form)
+
+        ## Works with objects.get()
+        # def form_valid(self, form):
+        #     # print(form.cleaned_data['work'])
+        #     work = form.cleaned_data['work']
+        #     drive = form.cleaned_data['drive']
+        #     off = form.cleaned_data['off']
+        #     # print(type(work))
+        #     # print(type(self.model.work_clock))
+        #     if self.model.work_clock > work:
+        #         self.model.work_clock -= work
+        #         print(f'result is: {self.model.work_clock}')
+        #     else:
+        #         print('In Violation!')
+        #         self.model.work_clock = 0
+        #         self.model.status = 'In Violation.'
+        #     self.model.save()
+            # return super().form_valid(form)
+    except ObjectDoesNotExist: 
+        pass
+    
 
 class DriverList(generics.ListCreateAPIView):
     queryset = Driver.objects.all()
@@ -70,5 +111,5 @@ class DriverList(generics.ListCreateAPIView):
 
 
 class DriverDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Driver.objects.all
+    queryset = Driver.objects.all()
     serializer_class = DriverSerializer      
