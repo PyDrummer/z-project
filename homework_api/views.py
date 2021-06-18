@@ -43,13 +43,16 @@ class DriverCreateView(CreateView):
     fields = ['author', 'work_clock', 'drive_clock']
 
 # Working kinda...
+## You must comment out DriverUpdateView before you migrate the db. Then comment back in.
 class DriverUpdateView(FormView):
+
     template_name='update.html'
     # add a try/except for model because there isnt always a 'driver' instance at the beginning.
     try:
         driver = Driver.objects.all()
         # For the purpose of this exercise, this api does not need to account for multiple drivers simultaneously
-        if len(driver) > 0:
+        
+        if driver:
             model = driver[0]
             # print(f'model is: {model}')
           
@@ -57,50 +60,43 @@ class DriverUpdateView(FormView):
             success_url = '/'
 
             def form_valid(self, form):
-                print(f'form is {form}')
+                # print(f'form is {form}')
                 work = form.cleaned_data['work']
                 drive = form.cleaned_data['drive']
                 off = form.cleaned_data['off']
-                print(f'off is {off}')
-                print(f'work_clock is {self.model.work_clock}')
+                # print(f'off is {off}')
+                # print(f'work_clock is {self.model.work_clock}')
 
                 if off >= 10:
                     self.model.work_clock = 14
-                    self.model.status = 'OK'
+                    self.model.drive_clock = 10
+                    self.model.work_status = 'OK'
+                    self.model.drive_status = 'OK'
                     self.model.save()
-                    print(f'off 10 work_clock is {self.model.work_clock}')
+                    # print(f'off 10 work_clock is {self.model.work_clock}')
                 else:
                     all_times = work + drive + off
-                    print(f'all times is {all_times}')
+                    # print(f'all times is {all_times}')
 
                     if (self.model.work_clock > all_times):
                         self.model.work_clock -= all_times
 
-                        print(f'result is: {self.model.work_clock}')
+                        # print(f'result is: {self.model.work_clock}')
                     else:
-                        print('In Violation!')
+                        # print('In Violation!')
                         self.model.work_clock = 0
-                        self.model.status = 'In Violation.'
+                        self.model.work_status = 'In Violation.'
+
+                    if self.model.drive_clock > drive:
+                        self.model.drive_clock -= drive
+                    else:
+                        self.model.drive_clock = 0
+                        self.model.drive_status = 'In Violation.'
+
                     self.model.save()
                 return super().form_valid(form)
 
-        ## Works with objects.get()
-        # def form_valid(self, form):
-        #     # print(form.cleaned_data['work'])
-        #     work = form.cleaned_data['work']
-        #     drive = form.cleaned_data['drive']
-        #     off = form.cleaned_data['off']
-        #     # print(type(work))
-        #     # print(type(self.model.work_clock))
-        #     if self.model.work_clock > work:
-        #         self.model.work_clock -= work
-        #         print(f'result is: {self.model.work_clock}')
-        #     else:
-        #         print('In Violation!')
-        #         self.model.work_clock = 0
-        #         self.model.status = 'In Violation.'
-        #     self.model.save()
-            # return super().form_valid(form)
+    ## This except is not currently working...
     except ObjectDoesNotExist: 
         pass
     

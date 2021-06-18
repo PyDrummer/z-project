@@ -8,7 +8,8 @@ class Driver(models.Model):
     driver = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     work_clock = models.IntegerField(default=14)
     drive_clock = models.IntegerField(default=10)
-    status = models.CharField(max_length=100, default="OK")
+    work_status = models.CharField(max_length=100, default="OK")
+    drive_status = models.CharField(max_length=100, default="OK")
 
     def __str__(self):
         return f'{self.driver}'
